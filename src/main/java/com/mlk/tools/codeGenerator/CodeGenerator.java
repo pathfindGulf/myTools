@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,12 +25,13 @@ import java.util.Scanner;
 public class CodeGenerator {
 
     // 数据源配置
-    private static String HOST = "127.0.0.1";
+    private static String HOST = "rm-8vb409422177kso1lao.mysql.zhangbei.rds.aliyuncs.com";
     private static String PORT = "3306";
-    private static String DATA_BASE = "measure";
+    private static String DATA_BASE = "handle";
     private static String USER_NAME = "root";
-    private static String PASSWORD = "123456";
+    private static String PASSWORD = "root!@#456";
     private static String DRIVER_NAME = "com.mysql.jdbc.Driver";
+    private static String PARENT = "com.iking.project.handle";
     /**
      * <p>
      * 读取控制台内容
@@ -78,7 +80,7 @@ public class CodeGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.ikingtech.test");
+        pc.setParent(PARENT);
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -126,8 +128,9 @@ public class CodeGenerator {
         strategy.setChainModel(true); //链式模型
         strategy.setEntityTableFieldAnnotationEnable(true);//实体字段注解
 //        strategy.setSuperEntityColumns("id");// 写于父类中的公共字段
-        strategy.setSuperControllerClass("com.ikingtech.framework.web.controller.BaseController");// 公共父类Controller
-        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
+        strategy.setSuperControllerClass("com.iking.framework.web.controller.BaseController");// 公共父类Controller
+        strategy.setInclude(scanner("表名，多个英文逗号分割\r\n 提示：查询所有表名 SELECT GROUP_CONCAT( table_name )" +
+                " FROM information_schema.TABLES WHERE table_schema = '你的DATA_BASE'").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
